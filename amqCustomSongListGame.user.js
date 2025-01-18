@@ -1077,11 +1077,6 @@ $("#gameContainer").append(
                             <div id="cslgSongListWarning"></div>
                         </div>
                     </div>
-						
-                    
-
-
-
                         <div id="cslgQuizSettingsContainer" class="container-fluid">
                             <div class="row">
                                 <div class="col-md-6">
@@ -1130,11 +1125,6 @@ $("#gameContainer").append(
                                             </div>
                                         </div>
                                     </div>
-
-
-
-
-                                    
                                 <div class="cslg-settings-section">
                                     <h3>Song Selection</h3>
                                     <div class="form-group">
@@ -1200,15 +1190,7 @@ $("#gameContainer").append(
                                         </div>
                                     </div>
                                 </div>
-
-
-
-
                                 </div>
-
-
-
-
                                 <div class="col-md-6">
                                 <div class="cslg-settings-section">
                                     <h3>Advanced Settings</h3>
@@ -1221,9 +1203,6 @@ $("#gameContainer").append(
                                     <input id="cslgHostOverride" type="text" style="width: 250px;" data-slider-ticks="[0, 1, 2, 3]" data-slider-ticks-labels='["Default", "nl", "ladist1", "vhdist1"]' data-slider-min="0" data-slider-max="3" data-slider-step="1" data-slider-value="0"/>
                                     </div>
                                 </div>
-
-
-                                
                                 <div class="cslg-settings-section">
                                     <h3>Training Mode Settings</h3>
                                     <div class="form-group">
@@ -1273,21 +1252,8 @@ $("#gameContainer").append(
                                             </div>
                                         </div>
                                 </div>
-
-
-
-
                                 </div>
-
-
-
-
-
                             </div>
-
-
-
-
                             </div>
                     <div id="cslgAnswerContainer">
                         <span style="font-size: 16px; font-weight: bold;">Old:</span>
