@@ -106,7 +106,6 @@ let nextVideoReady = false;
 let showSelection = 1;
 let guessTime = 20;
 let extraGuessTime = 0;
-let answerPhaseTime = 25; 
 let currentSong = 0;
 let totalSongs = 0;
 
@@ -150,9 +149,6 @@ let answerTimer;
 
 /** @type {number} */
 let extraGuessTimer;
-
-/** @type {number} */
-let answerPhaseTimer;
 
 /** @type {number} */
 let endGuessTimer;
@@ -394,7 +390,7 @@ function initializeSingleHandleSliders() {
       sliderId: "#cslgSettingsGuessTime",
       inputId: "#cslgSettingsGuessTimeInput",
       min: 1,
-      max: 99,
+      max: 90,
       defaultValue: 20,
       allowHigherInput: false,
     },
@@ -403,14 +399,6 @@ function initializeSingleHandleSliders() {
       inputId: "#cslgSettingsExtraGuessTimeInput",
       min: 0,
       max: 15,
-      defaultValue: 0,
-      allowHigherInput: false,
-    },
-    {
-      sliderId: "#cslgSettingsAnswerTime",
-      inputId: "#cslgSettingsAnswerTimeInput",
-      min: 0,
-      max: 99,
       defaultValue: 0,
       allowHigherInput: false,
     },
@@ -611,9 +599,6 @@ function loadSettings() {
   $("#cslgSettingsExtraGuessTime").slider("setValue", extraGuessTime);
   $("#cslgSettingsExtraGuessTimeInput").val(extraGuessTime);
 
-  $("#cslgSettingsAnswerTime").slider("setValue", answerPhaseTime);
-  $("#cslgSettingsAnswerTimeInput").val(answerPhaseTime);
-
   $("#cslgSettingsFastSkip").prop("checked", fastSkip);
 
   $("#cslgSettingsOPCheckbox").prop("checked", true);
@@ -666,10 +651,6 @@ function saveSettings() {
   extraGuessTime = getSliderValue(
     "#cslgSettingsExtraGuessTime",
     "#cslgSettingsExtraGuessTimeInput"
-  );
-  answerPhaseTime = getSliderValue(
-    "#cslgSettingsAnswerTime",
-    "#cslgSettingsAnswerTimeInput"
   );
   maxNewSongs24Hours = getSliderValue(
     "#cslgSettingsMaxNewSongs",
@@ -1077,54 +1058,48 @@ $("#gameContainer").append(
                             <div id="cslgSongListWarning"></div>
                         </div>
                     </div>
-                        <div id="cslgQuizSettingsContainer" class="container-fluid">
+						<div id="cslgQuizSettingsContainer" class="container-fluid">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <div class="cslg-settings-section">
-                                        <h3>Quiz Settings</h3>
-                                        <div class="form-group">
-                                            <label for="cslgSettingsSongs">Number of Songs:</label>
-                                            <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
-                                                <div style="flex-grow: 1; margin-right: 10px;">
-                                                    <input id="cslgSettingsSongs" type="text" data-slider-min="1" data-slider-max="100" data-slider-step="1" data-slider-value="20" style="width: 250px;"/>
-                                                </div>
-                                                <input type="number" id="cslgSettingsSongsInput" class="number-to-text" style="width: 40px;">
+                                <div class="cslg-settings-section">
+                                    <h3>Quiz Settings</h3>
+                                    <div class="form-group">
+                                        <label for="cslgSettingsSongs">Number of Songs:</label>
+                                        <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                                            <div style="flex-grow: 1; margin-right: 10px;">
+                                            <input id="cslgSettingsSongs" type="text" data-slider-min="1" data-slider-max="100" data-slider-step="1" data-slider-value="20" style="width: 250px;"/>
                                             </div>
+                                            <input type="number" id="cslgSettingsSongsInput" class="number-to-text" style="width: 40px; height: calc(1.5em + 0.5rem + 2px); padding: 0.25rem 0.5rem; font-size: 1.2rem; line-height: 1.5; border-radius: 0.2rem;">
                                         </div>
-                                        <div class="form-group">
-                                            <label for="cslgSettingsGuessTime">Guess Time (seconds):</label>
-                                            <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
-                                                <div style="flex-grow: 1; margin-right: 10px;">
-                                                    <input id="cslgSettingsGuessTime" type="text" data-slider-min="1" data-slider-max="99" data-slider-step="1" data-slider-value="20" style="width: 250px;"/>
-                                                </div>
-                                                <input type="number" id="cslgSettingsGuessTimeInput" class="number-to-text" style="width: 40px;">
+                                        </div>
+                                    <div class="form-group">
+                                        <label for="cslgSettingsGuessTime">Guess Time (seconds):</label>
+                                        <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                                            <div style="flex-grow: 1; margin-right: 10px;">
+                                            <input id="cslgSettingsGuessTime" type="text" data-slider-min="1" data-slider-max="99" data-slider-step="1" data-slider-value="20" style="width: 250px;"/>
                                             </div>
+                                            <input type="number" id="cslgSettingsGuessTimeInput" class="number-to-text" style="width: 40px; height: calc(1.5em + 0.5rem + 2px); padding: 0.25rem 0.5rem; font-size: 1.2rem; line-height: 1.5; border-radius: 0.2rem;">
                                         </div>
-                                        <div class="form-group">
-                                            <label for="cslgSettingsExtraGuessTime">Extra Time (seconds):</label>
-                                            <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
-                                                <div style="flex-grow: 1; margin-right: 10px;">
-                                                    <input id="cslgSettingsExtraGuessTime" type="text" data-slider-min="0" data-slider-max="15" data-slider-step="1" data-slider-value="0" style="width: 250px;"/>
-                                                </div>
-                                                <input type="number" id="cslgSettingsExtraGuessTimeInput" class="number-to-text" style="width: 40px;">
+                                        </div>
+                                    <div class="form-group">
+                                        <label for="cslgSettingsExtraGuessTime">Extra Time (seconds):</label>
+                                        <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                                            <div style="flex-grow: 1; margin-right: 10px;">
+                                            <input id="cslgSettingsExtraGuessTime" type="text" data-slider-min="0" data-slider-max="15" data-slider-step="1" data-slider-value="0" style="width: 250px;"/>
                                             </div>
+                                            <input type="number" id="cslgSettingsExtraGuessTimeInput" class="number-to-text" style="width: 40px; height: calc(1.5em + 0.5rem + 2px); padding: 0.25rem 0.5rem; font-size: 1.2rem; line-height: 1.5; border-radius: 0.2rem;">
                                         </div>
-                                        <div class="form-group">
-                                            <label for="cslgSettingsAnswerTime">Answer Time (seconds):</label>
-                                            <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
-                                                <div style="flex-grow: 1; margin-right: 10px;">
-                                                    <input id="cslgSettingsAnswerTime" type="text" data-slider-min="0" data-slider-max="99" data-slider-step="1" data-slider-value="0" style="width: 250px;"/>
-                                                </div>
-                                                <input type="number" id="cslgSettingsAnswerTimeInput" class="number-to-text" style="width: 40px;">
-                                            </div>
                                         </div>
-                                        <div class="form-group">
-                                            <div class="custom-control custom-switch">
-                                                <input type="checkbox" class="custom-control-input" id="cslgSettingsFastSkip">
-                                                <label class="custom-control-label" for="cslgSettingsFastSkip">Fast Skip</label>
-                                            </div>
-                                        </div>
+                                    <div class="form-group">
+                                    <div class="custom-control custom-switch">
+                                        <input type="checkbox" class="custom-control-input" id="cslgSettingsFastSkip">
+                                        <label class="custom-control-label" for="cslgSettingsFastSkip">Fast Skip</label>
                                     </div>
+                                    </div>
+                                </div>
+                                </div>
+
+                                <div class="col-md-6">
                                 <div class="cslg-settings-section">
                                     <h3>Song Selection</h3>
                                     <div class="form-group">
@@ -1191,6 +1166,9 @@ $("#gameContainer").append(
                                     </div>
                                 </div>
                                 </div>
+                            </div>
+
+                            <div class="row">
                                 <div class="col-md-6">
                                 <div class="cslg-settings-section">
                                     <h3>Advanced Settings</h3>
@@ -1203,6 +1181,9 @@ $("#gameContainer").append(
                                     <input id="cslgHostOverride" type="text" style="width: 250px;" data-slider-ticks="[0, 1, 2, 3]" data-slider-ticks-labels='["Default", "nl", "ladist1", "vhdist1"]' data-slider-min="0" data-slider-max="3" data-slider-step="1" data-slider-value="0"/>
                                     </div>
                                 </div>
+                                </div>
+
+                                <div class="col-md-6">
                                 <div class="cslg-settings-section">
                                     <h3>Training Mode Settings</h3>
                                     <div class="form-group">
@@ -1478,7 +1459,7 @@ function validateTrainingStart() {
     "#cslgSettingsGuessTime",
     "#cslgSettingsGuessTimeInput"
   );
-  if (isNaN(guessTime) || guessTime < 1 || guessTime > 99) {
+  if (isNaN(guessTime) || guessTime < 1 || guessTime > 90) {
     return messageDisplayer.displayMessage(
       "Unable to start",
       "invalid guess time"
@@ -1494,21 +1475,6 @@ function validateTrainingStart() {
       "invalid extra guess time"
     );
   }
-
-
-  answerPhaseTime = getSliderValue(
-    "#cslgSettingsAnswerTime",
-    "#cslgSettingsAnswerTimeInput"
-  );
-  if (isNaN(answerPhaseTime) || answerPhaseTime < 0 || answerPhaseTime > 99) {
-    return messageDisplayer.displayMessage(
-      "Unable to start",
-      "invalid answer time"
-    );
-  }
-
-
-
   startPointRange = /** @type {any} */ (
     $("#cslgSettingsStartPoint").slider("getValue")
   );
@@ -1652,7 +1618,7 @@ function validateTrainingStart() {
         btoa(
           `${showSelection}§${currentSong}§${totalSongs}§${guessTime}§${extraGuessTime}§${
             fastSkip ? "1" : "0"
-          }§${answerPhaseTime}`
+          }`
         )
     );
   }
@@ -2219,7 +2185,6 @@ $("#cslgAnisongdbMinGroupMembersInput").val("0");
 $("#cslgSettingsSongs").val("20");
 $("#cslgSettingsGuessTime").val("20");
 $("#cslgSettingsExtraGuessTime").val("0");
-$("#cslgSettingsAnswerTime").val("25");
 $("#cslgSettingsOPCheckbox").prop("checked", true);
 $("#cslgSettingsEDCheckbox").prop("checked", true);
 $("#cslgSettingsINCheckbox").prop("checked", true);
@@ -3228,7 +3193,7 @@ function setup() {
             btoa(
               `${showSelection}§${currentSong}§${totalSongs}§${guessTime}§${extraGuessTime}§${
                 fastSkip ? "1" : "0"
-              }§${answerPhaseTime}`
+              }`
             )
         );
       } else {
@@ -3251,7 +3216,7 @@ function setup() {
             btoa(
               `${showSelection}§${currentSong}§${totalSongs}§${guessTime}§${extraGuessTime}§${
                 fastSkip ? "1" : "0"
-              }§${answerPhaseTime}`
+              }`
             )
         );
       }
@@ -3277,7 +3242,7 @@ function setup() {
             btoa(
               `${showSelection}§${currentSong}§${totalSongs}§${guessTime}§${extraGuessTime}§${
                 fastSkip ? "1" : "0"
-              }§${answerPhaseTime}`
+              }`
             )
         );
       } else {
@@ -3299,7 +3264,7 @@ function setup() {
             btoa(
               `${showSelection}§${currentSong}§${totalSongs}§${guessTime}§${extraGuessTime}§${
                 fastSkip ? "1" : "0"
-              }§${answerPhaseTime}`
+              }`
             )
         );
       }
@@ -3632,19 +3597,6 @@ function validateStart() {
       "invalid extra guess time"
     );
   }
-
-  
-  answerPhaseTime = getSliderValue(
-    "#cslgSettingsAnswerTime",
-    "#cslgSettingsAnswerTimeInput"
-  );
-  if (isNaN(answerPhaseTime) || answerPhaseTime < 0 || answerPhaseTime > 99) {
-    return messageDisplayer.displayMessage(
-      "Unable to start",
-      "invalid answer time"
-    );
-  }
-
   /** @type {[number, number]} */
   startPointRange = /** @type {any} */ (
     $("#cslgSettingsStartPoint").slider("getValue")
@@ -3754,7 +3706,7 @@ function validateStart() {
         btoa(
           `${showSelection}§${currentSong}§${totalSongs}§${guessTime}§${extraGuessTime}§${
             fastSkip ? "1" : "0"
-          }§${answerPhaseTime}`
+          }`
         )
     );
   }
@@ -4150,7 +4102,7 @@ function endGuessPhase(songNumber) {
                 },
               },
               progressBarState: {
-                length: 25,
+                length: guessTime,
                 played: 0,
               },
               groupMap: createGroupSlotMap(
@@ -4191,7 +4143,7 @@ function endGuessPhase(songNumber) {
               clearInterval(skipInterval);
               clearTimeout(timeoutId);
             }
-          }, answerPhaseTime * 1000);          // was autoEndTime before edit
+          }, guessTime * 1000);
 
           setTimeout(
             () => {
@@ -4446,14 +4398,13 @@ function parseMessage(content, sender) {
     //start quiz
     if (lobby.inLobby && sender === lobby.hostName && !quiz.cslActive) {
       let split = atob(content.slice(5)).split("§");
-      if (split.length === 7) {
+      if (split.length === 6) {
         //mode = parseInt(split[0]);
         currentSong = parseInt(split[1]);
         totalSongs = parseInt(split[2]);
         guessTime = parseInt(split[3]);
         extraGuessTime = parseInt(split[4]);
         fastSkip = Boolean(parseInt(split[5]));
-        answerPhaseTimer = parseInt(split[6]);
         sendSystemMessage(
           `CSL: starting multiplayer quiz (${totalSongs} songs)`
         );
@@ -4681,7 +4632,7 @@ function parseMessage(content, sender) {
             },
           },
           progressBarState: {
-            length: 25,
+            length: guessTime,
             played: 0,
           },
           groupMap: createGroupSlotMap(Object.keys(quiz.players).map(Number)),
