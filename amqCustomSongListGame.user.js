@@ -102,6 +102,7 @@ let malClientId = saveData.malClientId ?? "";
 let hotKeys = saveData.hotKeys ?? {};
 let debug = Boolean(saveData.debug);
 let fastSkip = false;
+let noReview = false;
 let nextVideoReady = false;
 let showSelection = 1;
 let guessTime = 20;
@@ -600,6 +601,7 @@ function loadSettings() {
   $("#cslgSettingsExtraGuessTimeInput").val(extraGuessTime);
 
   $("#cslgSettingsFastSkip").prop("checked", fastSkip);
+  $("#cslgSettingsNoReview").prop("checked", noReview);
 
   $("#cslgSettingsOPCheckbox").prop("checked", true);
   $("#cslgSettingsEDCheckbox").prop("checked", true);
@@ -665,6 +667,7 @@ function saveSettings() {
     "#cslgSettingsCorrectSongsInput"
   );
   fastSkip = $("#cslgSettingsFastSkip").prop("checked");
+  noReview = $("#cslgSettingsNoReview").prop("checked");
   startPointRange = /** @type {any} */ (
     $("#cslgSettingsStartPoint").slider("getValue")
   );
@@ -1091,9 +1094,16 @@ $("#gameContainer").append(
                                         </div>
                                         </div>
                                     <div class="form-group">
-                                    <div class="custom-control custom-switch">
+                                    <div class="row" style="display: flex; align-items: center;">
+                                    <div class="custom-control custom-switch" style="margin-right: 15px;">
                                         <input type="checkbox" class="custom-control-input" id="cslgSettingsFastSkip">
                                         <label class="custom-control-label" for="cslgSettingsFastSkip">Fast Skip</label>
+                                    </div>
+
+                                    <div class="custom-control custom-switch">
+                                        <input type="checkbox" class="custom-control-input" id="cslgSettingsnNoReview">
+                                        <label class="custom-control-label" for="cslgSettingsnNoReview">No Weight Update</label>
+                                    </div>
                                     </div>
                                     </div>
                                 </div>
@@ -1608,6 +1618,7 @@ function validateTrainingStart() {
     );
   }
   fastSkip = $("#cslgSettingsFastSkip").prop("checked");
+  noReview = $("#cslgSettingsnNoReview").prop("checked");
   $("#cslgSettingsModal").modal("hide");
   console.log("song order: ", songOrder);
   if (lobby.soloMode) {
@@ -2199,6 +2210,7 @@ $("#cslgSettingsStartPoint").val("0-100");
 $("#cslgSettingsDifficulty").val("0-100");
 $("#cslgSettingsMaxNewSongs").val("25");
 $("#cslgSettingsFastSkip").prop("checked", false);
+$("#cslgSettingsnNoReview").prop("checked", false);
 $("#cslgFileUploadRow").hide();
 $("#cslgCSLButtonCSSInput").val(CSLButtonCSS);
 $("#cslgResetCSSButton").on("click", () => {
@@ -2359,6 +2371,7 @@ function updateNewSongsCount(songKey) {
 function reviewSong(song, success) {
   console.log(song);
   if (!isTraining) return;
+  if (noReview) return;
   let reviewData = loadReviewData();
   const songKey = `${song.songArtist}_${song.songName}`;
 
