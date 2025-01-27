@@ -1,3 +1,8 @@
+# Changes in this fork
+This fork mostly changes some minor details with how CSL operates and adds niche functionality. Mostly here for me to be able to listen/train songs as background music (in review phase so that i know what song im listening to as well). 
+- Instead of review phase taking 25 seconds flat regardless of answer phase time, review phase time is now equivalent to answer phase time (was adjustable as its own slider in older version if yuh rly want that)
+- Ability to not play with to training mode restrictions without having stats change (freezes difficulty distribution). Click "No Weight Update" to toggle this.
+
 # amq-scripts
 click on a script name below to install
 
